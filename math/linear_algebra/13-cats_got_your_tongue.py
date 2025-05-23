@@ -1,18 +1,8 @@
 #!/usr/bin/env python3
+"""funtion that concatenates two matrices along a specific axis"""
 
 import numpy as np
 
-mat1 = np.array([[11, 22, 33], [44, 55, 66]])
-mat2 = np.array([[1, 2, 3], [4, 5, 6]])
-add, sub, mul, div = np_elementwise(mat1, mat2)
 
-print("Add:\n", add)
-print("Sub:\n", sub)
-print("Mul:\n", mul)
-print("Div:\n", div)
-
-add, sub, mul, div = np_elementwise(mat1, 2)
-print("Add:\n", add)
-print("Sub:\n", sub)
-print("Mul:\n", mul)
-print("Div:\n", div)
+def np_cat(mat1, mat2, axis=0):
+    return np.concatenate((mat1, mat2), axis=axis)
