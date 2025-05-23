@@ -11,11 +11,14 @@ def mat_mul(mat1, mat2):
         mat2 (list of list of int/float): The second matrix.
 
     Returns:
-        list of list of int/float: A new matrix resulting from multiplying mat1 by mat2.
-        If the matrices cannot be multiplied (incompatible dimensions), returns None.
+        list of list of int/float: A new matrix resulting from multiplying
+mat1 by mat2.
+        If the matrices cannot be multiplied (incompatible dimensions),
+returns None.
 
     Assumptions:
-        - mat1 and mat2 are 2D matrices (lists of lists) with uniform row lengths.
+        - mat1 and mat2 are 2D matrices (lists of lists) with uniform row
+lengths.
         - All elements are integers or floats.
     """
     if len(mat1[0]) != len(mat2):
