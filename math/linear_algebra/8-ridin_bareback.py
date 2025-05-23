@@ -3,7 +3,7 @@
 
 
 def mat_mul(mat1, mat2):
-     """
+    """
     Performs matrix multiplication between two 2D matrices.
 
     Parameters:
