@@ -19,7 +19,9 @@ sum of mat1 and mat2.
         - mat1 and mat2 are 2D matrices with consistent row and column lengths.
         - All elements are either integers or floats.
     """
-    if len(mat1) != len(mat2)
-        or any(len(r1) != len(r2) for r1, r2 in zip(mat1, mat2)):
+    if (
+        len(mat1) != len(mat2)
+        or any(len(r1) != len(r2) for r1, r2 in zip(mat1, mat2))
+    ):
         return None
     return [[c1 + c2 for c1, c2 in zip(r1, r2)] for r1, r2 in zip(mat1, mat2)]
