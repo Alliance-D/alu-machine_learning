@@ -3,15 +3,15 @@
 
 
 def matrix_shape(matrix):
-	"""
-    	Calculates the shape of a matrix.
+    """
+    Calculates the shape of a matrix.
 
-    	Args:
-        	matrix (list): A nested list (matrix) where all elements in the same dimension
+    Args:
+        matrix (list): A nested list (matrix) where all elements in the same dimension
                        are of the same type and shape.
 
-    	Returns:
-        	list: A list of integers representing the shape of the matrix.
+    Returns:
+        list: A list of integers representing the shape of the matrix.
     """
     shape = []
     while isinstance(matrix, list):
