@@ -3,7 +3,6 @@
 
 
 def np_transpose(matrix):
-    """):
     """
     Returns the transpose of a numpy matrix.
 
