@@ -7,7 +7,8 @@ def matrix_shape(matrix):
     Calculates the shape of a matrix.
 
     Args:
-        matrix (list): A nested list (matrix) where all elements in the same dimension
+        matrix (list): A nested list (matrix) where all elements in the same
+dimension
                        are of the same type and shape.
 
     Returns:

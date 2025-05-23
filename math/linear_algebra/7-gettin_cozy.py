@@ -9,14 +9,17 @@ def cat_matrices2D(mat1, mat2, axis=0):
     Parameters:
         mat1 (list of list of int/float): The first matrix.
         mat2 (list of list of int/float): The second matrix.
-        axis (int): The axis along which to concatenate (0 for rows, 1 for columns).
+        axis (int): The axis along which to concatenate (0 for rows, 1 for
+columns).
 
     Returns:
         list of list of int/float: A new matrix resulting from concatenation.
-        If the matrices cannot be concatenated along the specified axis, returns None.
+        If the matrices cannot be concatenated along the specified axis,
+returns None.
 
     Assumptions:
-        - mat1 and mat2 are 2D matrices (lists of lists) with uniform row lengths.
+        - mat1 and mat2 are 2D matrices (lists of lists) with uniform row
+lengths.
         - All elements are integers or floats.
     """
     if axis == 0:
