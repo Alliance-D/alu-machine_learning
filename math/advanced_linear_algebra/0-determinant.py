@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
+"""a function def determinant(matrix): that calculates the determinant of a
+matrix"""
 def determinant(matrix):
     """
-    Calculates the determinant of a square matrix represented as a list of lists.
+    Calculates the determinant of a square matrix represented as a
+list of lists.
 
     Args:
-        matrix (list of lists): The input matrix. The special case [[]] is treated as a 0x0 matrix.
+        matrix (list of lists): The input matrix. The special case [[]] is
+treated as a 0x0 matrix.
 
     Returns:
         The determinant of the matrix (an integer or float).
@@ -44,7 +48,6 @@ def determinant(matrix):
     # Recursive expansion by the first row (Laplace expansion)
     det = 0
     for col_index in range(n):
-        # Build the (n-1)x(n-1) submatrix by removing row 0 and column col_index
         submatrix = []
         for i in range(1, n):
             # For row i, copy all columns except col_index
@@ -61,4 +64,3 @@ def determinant(matrix):
         det += cofactor_sign * cofactor_value * minor_det
 
     return det
-
