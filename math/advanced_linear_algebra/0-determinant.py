@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """a function def determinant(matrix): that calculates the determinant of a
 matrix"""
+
+
 def determinant(matrix):
     """
     Calculates the determinant of a square matrix represented as a
