@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import numpy as np
+
 """ a function def definiteness(matrix): that calculates the definiteness
 of a matrix"""
 
