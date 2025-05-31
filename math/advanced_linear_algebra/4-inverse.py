@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+"""a function def inverse(matrix): that calculates the inverse of a matrix"""
+
+
 def inverse(matrix):
     """
     Calculates the inverse of a given square matrix.
@@ -7,7 +10,7 @@ def inverse(matrix):
         matrix (list of lists): A non-empty square matrix to invert.
 
     Returns:
-        A new matrix (list of lists) representing the inverse of `matrix`, 
+        A new matrix (list of lists) representing the inverse of `matrix`,
         or None if `matrix` is singular (determinant == 0).
 
     Raises:
@@ -95,4 +98,3 @@ def inverse(matrix):
         inverse_matrix.append(inv_row)
 
     return inverse_matrix
-

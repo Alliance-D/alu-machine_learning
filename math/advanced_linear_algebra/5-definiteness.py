@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import numpy as np
 
+
 def definiteness(matrix):
     """
     Calculates the definiteness of a given square matrix.
@@ -71,4 +72,3 @@ def definiteness(matrix):
 
     # If it doesn't fit any category, return None
     return None
-

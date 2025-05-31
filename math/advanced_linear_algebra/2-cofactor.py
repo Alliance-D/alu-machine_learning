@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+""" a function def cofactor(matrix): that calculates the cofactor matrix of 
+a matrix """
+
+
 def cofactor(matrix):
     """
     Calculates the cofactor matrix of a given square matrix.
@@ -7,7 +11,8 @@ def cofactor(matrix):
         matrix (list of lists): A non-empty square matrix.
 
     Returns:
-        The cofactor matrix (list of lists) of `matrix`, where each entry [i][j]
+        The cofactor matrix (list of lists) of `matrix`, where each entry
+[i][j]
         is (-1)^(i+j) times the determinant of the submatrix formed by removing
         row i and column j from the original.
 
@@ -69,4 +74,3 @@ def cofactor(matrix):
         cofactor_matrix.append(row_cof)
 
     return cofactor_matrix
-
