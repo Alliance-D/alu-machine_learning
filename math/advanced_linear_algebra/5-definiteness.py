@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 """
-a function def definiteness(matrix): that calculates the definiteness of a matrix
+a function def definiteness(matrix): that calculates the definiteness of
+a matrix
 """
 
 import numpy as np
+
 
 def definiteness(matrix):
     """
@@ -43,7 +45,7 @@ def definiteness(matrix):
         return None
 
     if not np.allclose(matrix, matrix.T, atol=1e-8):
-        
+
         return None
 
     # 4. Compute eigenvalues
