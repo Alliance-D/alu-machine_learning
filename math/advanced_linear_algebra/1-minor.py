@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+""" a function def minor(matrix): that calculates the minor matrix of a
+matrix"""
+
+
 def minor(matrix):
     """
     Calculates the minor matrix of a given square matrix.
@@ -7,8 +11,10 @@ def minor(matrix):
         matrix (list of lists): A non-empty square matrix.
 
     Returns:
-        A new matrix (list of lists) where each element at [i][j] is the determinant
-        of the submatrix formed by removing row i and column j from the original.
+        A new matrix (list of lists) where each element at [i][j] is the
+determinant
+        of the submatrix formed by removing row i and column j from the
+original.
 
     Raises:
         TypeError: If `matrix` is not a list of lists.
