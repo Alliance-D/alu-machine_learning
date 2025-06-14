@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Module for computing sum of squares from 1 to n without loops"""
 
+
 def summation_i_squared(n):
     """
     Calculates the sum of squares from 1 to n using a closed-form formula:
