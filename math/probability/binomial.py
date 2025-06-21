@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Binomial distribution module without using imports."""
+"""Binomial distribution class without any imports."""
 
 
 class Binomial:
@@ -7,17 +7,16 @@ class Binomial:
 
     def __init__(self, data=None, n=1, p=0.5):
         """
-        Initializes the Binomial distribution.
+        Initialize the distribution with data or provided n and p.
 
         Args:
-            data (list): List of data to estimate parameters.
-            n (int): Number of Bernoulli trials.
-            p (float): Probability of success.
+            data (list): Dataset used to estimate parameters.
+            n (int): Number of trials (if no data).
+            p (float): Probability of success (if no data).
 
         Raises:
             TypeError: If data is not a list.
-            ValueError: If n ≤ 0, p not in (0, 1),
-                        or data has < 2 values.
+            ValueError: If invalid data, n, or p values.
         """
         if data is None:
             if n <= 0:
@@ -32,47 +31,57 @@ class Binomial:
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
             mean = sum(data) / len(data)
-            var = sum((x - mean) ** 2 for x in data) / len(data)
-            p = 1 - (var / mean)
+            variance = sum((x - mean) ** 2 for x in data) / len(data)
+            p = 1 - (variance / mean)
             n = round(mean / p)
             self.n = n
-            self.p = sum(data) / (len(data) * n)
+            self.p = sum(data) / (len(data) * self.n)
 
-    def factorial(self, k):
-        """Calculates the factorial of k."""
-        if k == 0 or k == 1:
+    def factorial(self, num):
+        """
+        Compute factorial of a non-negative integer.
+
+        Args:
+            num (int): Non-negative integer.
+
+        Returns:
+            int: Factorial of num.
+        """
+        if num == 0 or num == 1:
             return 1
         result = 1
-        for i in range(2, k + 1):
+        for i in range(2, num + 1):
             result *= i
         return result
 
     def pmf(self, k):
         """
-        Calculates the value of the PMF for a given number of successes.
+        Calculate the Probability Mass Function (PMF) for k successes.
 
         Args:
             k (int): Number of successes.
 
         Returns:
-            float: PMF value for k.
+            float: PMF value.
         """
         k = int(k)
         if k < 0 or k > self.n:
             return 0
-        comb = (self.factorial(self.n) //
-                (self.factorial(k) * self.factorial(self.n - k)))
+        n_fact = self.factorial(self.n)
+        k_fact = self.factorial(k)
+        nk_fact = self.factorial(self.n - k)
+        comb = n_fact / (k_fact * nk_fact)
         return comb * (self.p ** k) * ((1 - self.p) ** (self.n - k))
 
     def cdf(self, k):
         """
-        Calculates the value of the CDF for a given number of successes.
+        Calculate the Cumulative Distribution Function (CDF) for k.
 
         Args:
             k (int): Number of successes.
 
         Returns:
-            float: CDF value for k.
+            float: CDF value.
         """
         k = int(k)
         if k < 0:
