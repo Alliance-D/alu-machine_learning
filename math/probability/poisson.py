@@ -1,49 +1,47 @@
 #!/usr/bin/env python3
 """
-Normal distribution class with CDF computation
+Poisson distribution class
 """
 
-import math
 
-
-class Normal:
+class Poisson:
     """
-    Represents a normal distribution
+    Represents a Poisson distribution
     """
 
-    def __init__(self, data=None, mean=0., stddev=1.):
+    def __init__(self, data=None, lambtha=1.):
         """
-        Initialize a Normal distribution.
+        Class constructor
+
+        Parameters:
+        - data: list of data to estimate the distribution (optional)
+        - lambtha: expected number of occurrences (float)
         """
         if data is None:
-            if stddev <= 0:
-                raise ValueError("stddev must be a positive value")
-            self.mean = float(mean)
-            self.stddev = float(stddev)
+            if lambtha <= 0:
+                raise ValueError("lambtha must be a positive value")
+            self.lambtha = float(lambtha)
         else:
             if not isinstance(data, list):
                 raise TypeError("data must be a list")
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
-            self.mean = float(sum(data) / len(data))
-            variance = sum((x - self.mean) ** 2 for x in data) / len(data)
-            self.stddev = float(math.sqrt(variance))
+            self.lambtha = float(sum(data) / len(data))
 
-    def z_score(self, x):
-        """Calculates the z-score of a given x-value"""
-        return (x - self.mean) / self.stddev
+    def factorial(self, k):
+        result = 1
+        for i in range(1, k + 1):
+            result *= i
+        return result
 
-    def x_value(self, z):
-        """Calculates the x-value of a given z-score"""
-        return z * self.stddev + self.mean
+    def pmf(self, k):
+        k = int(k)
+        if k < 0:
+            return 0
+        return (self.lambtha ** k) * (2.7182818285 ** -self.lambtha) / self.factorial(k)
 
-    def pdf(self, x):
-        """Calculates the value of the PDF for a given x-value"""
-        exp_component = math.exp(-0.5 * ((x - self.mean) / self.stddev) ** 2)
-        coef = 1 / (self.stddev * math.sqrt(2 * math.pi))
-        return coef * exp_component
-
-    def cdf(self, x):
-        """Calculates the value of the CDF for a given x-value"""
-        z = (x - self.mean) / (self.stddev * math.sqrt(2))
-        return 0.5 * (1 + math.erf(z))
+    def cdf(self, k):
+        k = int(k)
+        if k < 0:
+            return 0
+        return sum(self.pmf(i) for i in range(k + 1))

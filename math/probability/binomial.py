@@ -1,8 +1,6 @@
 #!/usr/bin/env python3
 """Binomial Distribution Class"""
 
-import math
-
 
 class Binomial:
     """Represents a binomial distribution"""
@@ -20,27 +18,43 @@ class Binomial:
                 raise TypeError("data must be a list")
             if len(data) < 2:
                 raise ValueError("data must contain multiple values")
+
             mean = sum(data) / len(data)
             variance = sum((x - mean) ** 2 for x in data) / len(data)
-            p_est = 1 - (variance / mean)
-            n_est = round(mean / p_est)
-            p_est = mean / n_est
-            self.n = n_est
-            self.p = float(p_est)
+            p = 1 - (variance / mean)
+            n = round(mean / p)
+            p = mean / n
+            self.n = n
+            self.p = float(p)
+
+    def factorial(self, k):
+        """Computes factorial without import"""
+        result = 1
+        for i in range(1, k + 1):
+            result *= i
+        return result
 
     def pmf(self, k):
-        """Calculates the PMF for a given number of successes k"""
+        """Probability Mass Function"""
         k = int(k)
         if k < 0 or k > self.n:
             return 0
 
-        nCk = math.factorial(self.n) / (math.factorial(k) * math.factorial(self.n - k))
-        return nCk * (self.p ** k) * ((1 - self.p) ** (self.n - k))
+        n_fac = self.factorial(self.n)
+        k_fac = self.factorial(k)
+        n_k_fac = self.factorial(self.n - k)
+
+        comb = n_fac / (k_fac * n_k_fac)
+        prob = comb * (self.p ** k) * ((1 - self.p) ** (self.n - k))
+        return prob
 
     def cdf(self, k):
-        """Calculates the CDF for a given number of successes k"""
+        """Cumulative Distribution Function"""
         k = int(k)
         if k < 0:
             return 0
 
-        return sum(self.pmf(i) for i in range(0, k + 1))
+        total = 0
+        for i in range(k + 1):
+            total += self.pmf(i)
+        return total

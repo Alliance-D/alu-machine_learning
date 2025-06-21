@@ -3,8 +3,6 @@
 Exponential distribution class
 """
 
-import math
-
 
 class Exponential:
     """
@@ -31,19 +29,11 @@ class Exponential:
             self.lambtha = float(1 / (sum(data) / len(data)))
 
     def pdf(self, x):
-        """
-        Calculates the value of the PDF for a given time period x
-        """
         if x < 0:
             return 0
-
-        return self.lambtha * math.exp(-self.lambtha * x)
+        return self.lambtha * (2.7182818285 ** (-self.lambtha * x))
 
     def cdf(self, x):
-        """
-        Calculates the value of the CDF for a given time period x
-        """
         if x < 0:
             return 0
-
-        return 1 - math.exp(-self.lambtha * x)
+        return 1 - (2.7182818285 ** (-self.lambtha * x))
