@@ -1,62 +1,85 @@
 #!/usr/bin/env python3
-"""Exponential distribution module without any imports."""
+""" Exponential class  """
 
 
 class Exponential:
-    """Represents an exponential distribution."""
+    """
+    class that represents exponential distribution
 
-    def __init__(self, data=None, lambtha=1.):
+    class constructor:
+        def __init__(self, data=None, lambtha=1.)
+
+    instance attributes:
+        lambtha [float]: the expected number of occurances in a given time
+
+    instance methods:
+        def pdf(self, x): calculates PDF for given time period
+        def cdf(self, x): calculates CDF for given time period
+    """
+
+    def __init__(self, data=None, lambtha=1.0):
         """
-        Initializes the Exponential distribution.
+        class constructor
 
-        Args:
-            data (list): List of the data to estimate lambtha.
-            lambtha (float): Expected number of occurrences.
+        parameters:
+            data [list]: data to be used to estimate the distibution
+            lambtha [float]: the expected number of occurances on a given time
 
-        Raises:
-            TypeError: If data is not a list.
-            ValueError: If data has fewer than two values or
-                        lambtha is not positive.
+        Sets the instance attribute lambtha as a float
+        If data is not given:
+            Use the given lambtha or
+            raise ValueError if lambtha is not positive value
+        If data is given:
+            Calculate the lambtha of data
+            Raise TypeError if data is not a list
+            Raise ValueError if data does not contain at least two data points
         """
         if data is None:
-            if lambtha <= 0:
+            if lambtha < 1:
                 raise ValueError("lambtha must be a positive value")
-            self.lambtha = float(lambtha)
+            else:
+                self.lambtha = float(lambtha)
         else:
-            if not isinstance(data, list):
+            if type(data) is not list:
                 raise TypeError("data must be a list")
-            if len(data) < 2:
+            elif len(data) < 2:
                 raise ValueError("data must contain multiple values")
-            self.lambtha = float(1 / (sum(data) / len(data)))
+            else:
+                lambtha = float(len(data) / sum(data))
+                self.lambtha = lambtha
 
     def pdf(self, x):
         """
-        Calculates the value of the PDF (Probability Density Function)
-        for a given time period x.
+        calculates the value of the PDF for a given time period
 
-        Args:
-            x (float): Time period.
+        parameters:
+            x [int]: time period
+                If x is out of range, return 0
 
-        Returns:
-            float: The PDF value for x. Returns 0 if x < 0.
+        return:
+            the PDF value for x
         """
         if x < 0:
             return 0
         e = 2.7182818285
-        return self.lambtha * e ** (-self.lambtha * x)
+        lambtha = self.lambtha
+        pdf = lambtha * (e ** (-lambtha * x))
+        return pdf
 
     def cdf(self, x):
         """
-        Calculates the value of the CDF (Cumulative Distribution Function)
-        for a given time period x.
+        calculates the value of the CDF for a given time period
 
-        Args:
-            x (float): Time period.
+        parameters:
+            x [int]: time period
+                If x is out of range, return 0
 
-        Returns:
-            float: The CDF value for x. Returns 0 if x < 0.
+        return:
+            the CDF value for x
         """
         if x < 0:
             return 0
         e = 2.7182818285
-        return 1 - e ** (-self.lambtha * x)
+        lambtha = self.lambtha
+        cdf = 1 - (e ** (-lambtha * x))
+        return cdf
