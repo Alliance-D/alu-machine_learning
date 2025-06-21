@@ -1,21 +1,22 @@
 #!/usr/bin/env python3
-"""
-Exponential distribution class
-"""
+"""Exponential distribution module without imports."""
 
 
 class Exponential:
-    """
-    Represents an exponential distribution
-    """
+    """Represents an exponential distribution."""
 
     def __init__(self, data=None, lambtha=1.):
         """
-        Class constructor
+        Initializes the Exponential distribution.
 
-        Parameters:
-        - data: list of data to estimate the distribution (optional)
-        - lambtha: expected number of occurrences in a given time frame
+        Args:
+            data (list): List of the data to estimate lambtha.
+            lambtha (float): Expected number of occurrences.
+
+        Raises:
+            TypeError: If data is not a list.
+            ValueError: If data has fewer than two values or
+                        lambtha is not positive.
         """
         if data is None:
             if lambtha <= 0:
@@ -29,11 +30,32 @@ class Exponential:
             self.lambtha = float(1 / (sum(data) / len(data)))
 
     def pdf(self, x):
+        """
+        Calculates the PDF (Probability Density Function) for a given time.
+
+        Args:
+            x (float): Time period.
+
+        Returns:
+            float: The value of the PDF at x.
+        """
         if x < 0:
             return 0
-        return self.lambtha * (2.7182818285 ** (-self.lambtha * x))
+        e = 2.7182818285
+        return self.lambtha * e ** (-self.lambtha * x)
 
     def cdf(self, x):
+        """
+        Calculates the CDF (Cumulative Distribution Function)
+        for a given time.
+
+        Args:
+            x (float): Time period.
+
+        Returns:
+            float: The value of the CDF at x.
+        """
         if x < 0:
             return 0
-        return 1 - (2.7182818285 ** (-self.lambtha * x))
+        e = 2.7182818285
+        return 1 - e ** (-self.lambtha * x)
