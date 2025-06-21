@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Exponential distribution module without imports."""
+"""Exponential distribution module without any imports."""
 
 
 class Exponential:
@@ -31,13 +31,14 @@ class Exponential:
 
     def pdf(self, x):
         """
-        Calculates the PDF (Probability Density Function) for a given time.
+        Calculates the value of the PDF (Probability Density Function)
+        for a given time period x.
 
         Args:
             x (float): Time period.
 
         Returns:
-            float: The value of the PDF at x.
+            float: The PDF value for x. Returns 0 if x < 0.
         """
         if x < 0:
             return 0
@@ -46,14 +47,14 @@ class Exponential:
 
     def cdf(self, x):
         """
-        Calculates the CDF (Cumulative Distribution Function)
-        for a given time.
+        Calculates the value of the CDF (Cumulative Distribution Function)
+        for a given time period x.
 
         Args:
             x (float): Time period.
 
         Returns:
-            float: The value of the CDF at x.
+            float: The CDF value for x. Returns 0 if x < 0.
         """
         if x < 0:
             return 0
