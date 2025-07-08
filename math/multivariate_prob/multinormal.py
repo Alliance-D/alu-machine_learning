@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-This module defines the MultiNormal class for multivariate normal distributions.
+This module defines the MultiNormal class for multivariate normal distributions
 """
 
 import numpy as np
