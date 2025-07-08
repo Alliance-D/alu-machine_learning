@@ -1,28 +1,48 @@
 #!/usr/bin/env python3
+"""Module that performs a convolution on grayscale images with padding and stride."""
+
+
 import numpy as np
 
-def convolve(images, kernels, padding='same', stride=(1, 1)):
-    m, h, w, c = images.shape
-    kh, kw, kc, nc = kernels.shape
+
+def convolve(images, kernel, padding='same', stride=(1, 1)):
+    """
+    Performs a convolution on grayscale images.
+
+    Parameters:
+    - images: np.ndarray of shape (m, h, w)
+    - kernel: np.ndarray of shape (kh, kw)
+    - padding: 'same', 'valid', or a tuple of (ph, pw)
+    - stride: tuple of (sh, sw)
+
+    Returns:
+    - np.ndarray: convolved images
+    """
+    m, h, w = images.shape
+    kh, kw = kernel.shape
     sh, sw = stride
 
-    if c != kc:
-        raise ValueError("Number of channels in images and kernels must match")
-
-    # Compute padding
-    if type(padding) is tuple:
+    if isinstance(padding, tuple):
         ph, pw = padding
     elif padding == 'same':
-        ph = ((h - 1) * sh + kh - h) // 2 + 1 if sh > 1 else (kh - 1) // 2
-        pw = ((w - 1) * sw + kw - w) // 2 + 1 if sw > 1 else (kw - 1) // 2
+        ph = ((h - 1) * sh + kh - h) // 2 + 1
+        pw = ((w - 1) * sw + kw - w) // 2 + 1
     elif padding == 'valid':
         ph = pw = 0
     else:
         raise ValueError("padding must be 'same', 'valid', or a tuple")
 
-    # Pad the images
-    padded = np.pad(images, ((0, 0), (ph, ph), (pw, pw), (0, 0)), mode='constant')
+    # Pad the image
+    images_padded = np.pad(images, ((0, 0), (ph, ph), (pw, pw)), mode='constant')
 
-    # Output dimensions
     out_h = (h + 2 * ph - kh) // sh + 1
-    out_w_
+    out_w = (w + 2 * pw - kw) // sw + 1
+    output = np.zeros((m, out_h, out_w))
+
+    for i in range(out_h):
+        for j in range(out_w):
+            region = images_padded[:, i * sh:i * sh + kh, j * sw:j * sw + kw]
+            output[:, i, j] = np.sum(region * kernel, axis=(1, 2))
+
+    return output
+
