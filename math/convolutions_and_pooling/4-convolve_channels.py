@@ -10,37 +10,33 @@ def convolve_channels(images, kernel, padding='valid', stride=(1, 1)):
     Performs a convolution on RGB images.
 
     Parameters:
-    - images (numpy.ndarray): shape (m, h, w, c), multiple RGB images
-    - kernel (numpy.ndarray): shape (kh, kw, c), kernel for each channel
+    - images (numpy.ndarray): shape (m, h, w, c)
+    - kernel (numpy.ndarray): shape (kh, kw, c)
     - padding (str or tuple): 'same', 'valid', or (ph, pw)
     - stride (tuple): (sh, sw)
 
     Returns:
-    - numpy.ndarray: shape (m, new_h, new_w), convolved images
+    - numpy.ndarray: convolved images of shape (m, out_h, out_w)
     """
     m, h, w, c = images.shape
     kh, kw, kc = kernel.shape
     sh, sw = stride
 
     if kc != c:
-        raise ValueError("kernel and image channels must match")
+        raise ValueError("Kernel and image channels must match.")
 
-    # Determine padding
-    if isinstance(padding, tuple):
-        ph, pw = padding
+    if padding == 'valid':
+        ph, pw = 0, 0
     elif padding == 'same':
         ph = ((h - 1) * sh + kh - h) // 2 + 1
         pw = ((w - 1) * sw + kw - w) // 2 + 1
-    elif padding == 'valid':
-        ph = pw = 0
+    elif isinstance(padding, tuple):
+        ph, pw = padding
     else:
-        raise ValueError("Invalid padding type.")
+        raise ValueError("Invalid padding value.")
 
-    # Apply padding
-    padded = np.pad(
-        images,
-        ((0, 0), (ph, ph), (pw, pw), (0, 0)),
-        mode='constant'
+    images_padded = np.pad(
+        images, ((0, 0), (ph, ph), (pw, pw), (0, 0)), mode='constant'
     )
 
     out_h = (h + 2 * ph - kh) // sh + 1
@@ -49,7 +45,9 @@ def convolve_channels(images, kernel, padding='valid', stride=(1, 1)):
 
     for i in range(out_h):
         for j in range(out_w):
-            region = padded[:, i * sh:i * sh + kh, j * sw:j * sw + kw, :]
+            region = images_padded[
+                :, i * sh:i * sh + kh, j * sw:j * sw + kw, :
+            ]
             output[:, i, j] = np.sum(region * kernel, axis=(1, 2, 3))
 
     return output
