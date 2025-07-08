@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Module that performs a convolution on grayscale images with padding and stride."""
+"""Module that performs a convolution on images with padding and stride."""
 
 
 import numpy as np
@@ -7,19 +7,28 @@ import numpy as np
 
 def convolve(images, kernel, padding='same', stride=(1, 1)):
     """
-    Performs a convolution on grayscale images.
+    Performs a convolution on grayscale or RGB images.
 
     Parameters:
-    - images: np.ndarray of shape (m, h, w)
-    - kernel: np.ndarray of shape (kh, kw)
-    - padding: 'same', 'valid', or a tuple of (ph, pw)
+    - images: np.ndarray of shape (m, h, w) or (m, h, w, c)
+    - kernel: np.ndarray of shape (kh, kw) or (kh, kw, c)
+    - padding: 'same', 'valid', or (ph, pw)
     - stride: tuple of (sh, sw)
 
     Returns:
     - np.ndarray: convolved images
     """
-    m, h, w = images.shape
-    kh, kw = kernel.shape
+    if images.ndim == 3:
+        m, h, w = images.shape
+        c = 1
+        images = images[..., np.newaxis]
+        kernel = kernel[..., np.newaxis]
+    elif images.ndim == 4:
+        m, h, w, c = images.shape
+    else:
+        raise ValueError("Images must be 3D or 4D")
+
+    kh, kw = kernel.shape[:2]
     sh, sw = stride
 
     if isinstance(padding, tuple):
@@ -30,10 +39,11 @@ def convolve(images, kernel, padding='same', stride=(1, 1)):
     elif padding == 'valid':
         ph = pw = 0
     else:
-        raise ValueError("padding must be 'same', 'valid', or a tuple")
+        raise ValueError("Invalid padding type")
 
-    # Pad the image
-    images_padded = np.pad(images, ((0, 0), (ph, ph), (pw, pw)), mode='constant')
+    images_padded = np.pad(images,
+                           ((0, 0), (ph, ph), (pw, pw), (0, 0)),
+                           mode='constant')
 
     out_h = (h + 2 * ph - kh) // sh + 1
     out_w = (w + 2 * pw - kw) // sw + 1
@@ -41,8 +51,9 @@ def convolve(images, kernel, padding='same', stride=(1, 1)):
 
     for i in range(out_h):
         for j in range(out_w):
-            region = images_padded[:, i * sh:i * sh + kh, j * sw:j * sw + kw]
-            output[:, i, j] = np.sum(region * kernel, axis=(1, 2))
+            region = images_padded[
+                :, i * sh:i * sh + kh, j * sw:j * sw + kw, :
+            ]
+            output[:, i, j] = np.sum(region * kernel, axis=(1, 2, 3))
 
     return output
-
