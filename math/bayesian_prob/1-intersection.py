@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Calculates the intersection of obtaining this data with various probabilities"""
+"""Calculates the intersection of obtaining this data with various
+probabilities"""
 import numpy as np
 from scipy.special import comb
 
