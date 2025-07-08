@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
+"""
+This module defines the MultiNormal class for multivariate normal distributions.
+"""
+
 import numpy as np
+
 
 class MultiNormal:
     """
@@ -12,8 +17,6 @@ class MultiNormal:
 
         Parameters:
         - data: numpy.ndarray of shape (d, n)
-            d: number of dimensions
-            n: number of data points
         """
         if not isinstance(data, np.ndarray) or data.ndim != 2:
             raise TypeError("data must be a 2D numpy.ndarray")
@@ -40,18 +43,13 @@ class MultiNormal:
         if not isinstance(x, np.ndarray):
             raise TypeError("x must be a numpy.ndarray")
         if x.shape != (self.d, 1):
-            raise ValueError(f"x must have the shape ({self.d}, 1)")
+            raise ValueError("x must have the shape ({}, 1)".format(self.d))
 
-        # Difference from mean
         x_m = x - self.mean
+        det = np.linalg.det(self.cov)
+        inv = np.linalg.inv(self.cov)
+        denom = np.sqrt(((2 * np.pi) ** self.d) * det)
+        exponent = -0.5 * (x_m.T @ inv @ x_m)
+        pdf = (1 / denom) * np.exp(exponent)
 
-        # Determinant and inverse of covariance matrix
-        det_cov = np.linalg.det(self.cov)
-        inv_cov = np.linalg.inv(self.cov)
-
-        # PDF computation
-        num = np.exp(-0.5 * (x_m.T @ inv_cov @ x_m))
-        denom = np.sqrt(((2 * np.pi) ** self.d) * det_cov)
-
-        return float(num / denom)
-
+        return float(pdf)

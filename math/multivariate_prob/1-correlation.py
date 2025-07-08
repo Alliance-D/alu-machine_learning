@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
+"""
+This module provides a function to calculate the correlation matrix
+from a given covariance matrix using NumPy, without relying on numpy.cov.
+"""
+
 import numpy as np
+
 
 def correlation(C):
     """
@@ -10,23 +16,20 @@ def correlation(C):
 
     Returns:
     - numpy.ndarray of shape (d, d), the correlation matrix
+
+    Raises:
+    - TypeError: If C is not a numpy.ndarray
+    - ValueError: If C is not a 2D square matrix
     """
-    # Validate input
     if not isinstance(C, np.ndarray):
         raise TypeError("C must be a numpy.ndarray")
+
     if C.ndim != 2 or C.shape[0] != C.shape[1]:
         raise ValueError("C must be a 2D square matrix")
 
-    # Standard deviations (sqrt of diagonal)
-    stddev = np.sqrt(np.diag(C))  # shape (d,)
-
-    # Avoid division by zero by replacing 0s with very small number (optional safeguard)
-    stddev[stddev == 0] = 1e-8
-
-    # Outer product of stddev to form the denominator matrix
-    denom = np.outer(stddev, stddev)  # shape (d, d)
-
-    # Compute correlation matrix
+    stddev = np.sqrt(np.diag(C))
+    stddev[stddev == 0] = 1e-8  # prevent division by zero
+    denom = np.outer(stddev, stddev)
     corr = C / denom
 
     return corr
