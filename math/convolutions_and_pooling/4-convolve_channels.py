@@ -1,27 +1,29 @@
 #!/usr/bin/env python3
-"""Module that performs a valid convolution on grayscale images."""
+"""Module that performs a convolution on RGB images (multi-channel)."""
 
 
 import numpy as np
 
 
-def convolve_grayscale(images, kernel, padding='valid', stride=(1, 1)):
+def convolve_channels(images, kernel, padding='valid', stride=(1, 1)):
     """
-    Performs a convolution on grayscale images with optional padding and
-stride.
+    Performs a convolution on RGB images.
 
     Parameters:
-    - images (numpy.ndarray): shape (m, h, w)
-    - kernel (numpy.ndarray): shape (kh, kw)
+    - images (numpy.ndarray): shape (m, h, w, c), multiple RGB images
+    - kernel (numpy.ndarray): shape (kh, kw, c), kernel for each channel
     - padding (str or tuple): 'same', 'valid', or (ph, pw)
     - stride (tuple): (sh, sw)
 
     Returns:
-    - numpy.ndarray: convolved images
+    - numpy.ndarray: shape (m, new_h, new_w), convolved images
     """
-    m, h, w = images.shape
-    kh, kw = kernel.shape
+    m, h, w, c = images.shape
+    kh, kw, kc = kernel.shape
     sh, sw = stride
+
+    if kc != c:
+        raise ValueError("Kernel and image channel dimensions must match.")
 
     if isinstance(padding, tuple):
         ph, pw = padding
@@ -33,11 +35,11 @@ stride.
     else:
         raise ValueError("padding must be 'same', 'valid', or a tuple")
 
-    # Only apply padding if needed
-    if ph > 0 or pw > 0:
-        images = np.pad(
-            images, ((0, 0), (ph, ph), (pw, pw)),
-            mode='constant')
+    images_padded = np.pad(
+        images,
+        ((0, 0), (ph, ph), (pw, pw), (0, 0)),
+        mode='constant'
+    )
 
     out_h = (h + 2 * ph - kh) // sh + 1
     out_w = (w + 2 * pw - kw) // sw + 1
@@ -45,7 +47,9 @@ stride.
 
     for i in range(out_h):
         for j in range(out_w):
-            region = images[:, i * sh:i * sh + kh, j * sw:j * sw + kw]
-            output[:, i, j] = np.sum(region * kernel, axis=(1, 2))
+            region = images_padded[
+                :, i * sh:i * sh + kh, j * sw:j * sw + kw, :
+            ]
+            output[:, i, j] = np.sum(region * kernel, axis=(1, 2, 3))
 
     return output
