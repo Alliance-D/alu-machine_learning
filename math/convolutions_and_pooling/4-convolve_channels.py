@@ -10,20 +10,20 @@ def convolve_channels(images, kernel, padding='valid', stride=(1, 1)):
     Performs a convolution on RGB images.
 
     Parameters:
-    - images (numpy.ndarray): shape (m, h, w, c)
-    - kernel (numpy.ndarray): shape (kh, kw, c)
-    - padding (str or tuple): 'same', 'valid', or (ph, pw)
-    - stride (tuple): (sh, sw)
+    - images: np.ndarray of shape (m, h, w, c)
+    - kernel: np.ndarray of shape (kh, kw, c)
+    - padding: 'same', 'valid', or (ph, pw)
+    - stride: (sh, sw)
 
     Returns:
-    - numpy.ndarray: convolved images of shape (m, out_h, out_w)
+    - np.ndarray: convolved images of shape (m, out_h, out_w)
     """
     m, h, w, c = images.shape
     kh, kw, kc = kernel.shape
     sh, sw = stride
 
     if kc != c:
-        raise ValueError("Kernel and image channels must match.")
+        raise ValueError("Kernel and image channels must match image channels")
 
     if padding == 'valid':
         ph, pw = 0, 0
@@ -33,10 +33,11 @@ def convolve_channels(images, kernel, padding='valid', stride=(1, 1)):
     elif isinstance(padding, tuple):
         ph, pw = padding
     else:
-        raise ValueError("Invalid padding value.")
+        raise ValueError("Invalid padding type")
 
     images_padded = np.pad(
-        images, ((0, 0), (ph, ph), (pw, pw), (0, 0)), mode='constant'
+        images, ((0, 0), (ph, ph), (pw, pw), (0, 0)),
+        mode='constant'
     )
 
     out_h = (h + 2 * ph - kh) // sh + 1
