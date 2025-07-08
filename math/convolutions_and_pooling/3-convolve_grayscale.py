@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 def convolve_grayscale(images, kernel, padding='same', stride=(1, 1)):
     m, h, w = images.shape
     kh, kw = kernel.shape
