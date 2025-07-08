@@ -1,44 +1,47 @@
 #!/usr/bin/env python3
+"""Module that performs a convolution on RGB images (multi-channel)."""
+
+
 import numpy as np
 
-def convolve_channels(images, kernel, padding='same', stride=(1, 1)):
+
+def convolve_channels(images, kernel, padding='valid', stride=(1, 1)):
+    """
+    Performs a convolution on RGB images.
+
+    Parameters:
+    - images (numpy.ndarray): shape (m, h, w, c), multiple RGB images
+    - kernel (numpy.ndarray): shape (kh, kw, c), kernel for each channel
+    - padding (str or tuple): 'same', 'valid', or (ph, pw)
+    - stride (tuple): (sh, sw)
+
+    Returns:
+    - numpy.ndarray: shape (m, new_h, new_w), convolved images
+    """
     m, h, w, c = images.shape
-    kh, kw, kc = kernel.shape
+    kh, kw, _ = kernel.shape
     sh, sw = stride
 
-    assert c == kc, "The number of channels in the image and kernel must match"
+    if isinstance(padding, tuple):
+        ph, pw = padding
+    elif padding == 'same':
+        ph = ((h - 1) * sh + kh - h) // 2 + 1
+        pw = ((w - 1) * sw + kw - w) // 2 + 1
+    else:  # 'valid'
+        ph = pw = 0
 
-    if padding == 'same':
-        ph = max((h - 1) * sh + kh - h, 0)
-        pw = max((w - 1) * sw + kw - w, 0)
-        ph_top = ph // 2
-        ph_bottom = ph - ph_top
-        pw_left = pw // 2
-        pw_right = pw - pw_left
-    elif padding == 'valid':
-        ph_top = ph_bottom = pw_left = pw_right = 0
-    else:  # tuple
-        ph_top, pw_left = padding
-        ph_bottom, pw_right = padding
-
-    padded_images = np.pad(
+    padded = np.pad(
         images,
-        pad_width=((0, 0), (ph_top, ph_bottom), (pw_left, pw_right), (0, 0)),
-        mode='constant',
-        constant_values=0
-    )
+        ((0, 0), (ph, ph), (pw, pw), (0, 0)),
+        mode='constant')
 
-    new_h = (h + ph_top + ph_bottom - kh) // sh + 1
-    new_w = (w + pw_left + pw_right - kw) // sw + 1
-    output = np.zeros((m, new_h, new_w))
+    out_h = (h + 2 * ph - kh) // sh + 1
+    out_w = (w + 2 * pw - kw) // sw + 1
+    output = np.zeros((m, out_h, out_w))
 
-    for i in range(new_h):
-        for j in range(new_w):
-            h_start = i * sh
-            h_end = h_start + kh
-            w_start = j * sw
-            w_end = w_start + kw
-            region = padded_images[:, h_start:h_end, w_start:w_end, :]
+    for i in range(out_h):
+        for j in range(out_w):
+            region = padded[:, i * sh:i * sh + kh, j * sw:j * sw + kw, :]
             output[:, i, j] = np.sum(region * kernel, axis=(1, 2, 3))
 
     return output
