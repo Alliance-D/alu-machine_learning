@@ -18,4 +18,3 @@ def initialize(X, k):
     if not isinstance(k, int) or k <= 0:
         return None
     return np.random.uniform(X.min(axis=0), X.max(axis=0), (k, X.shape[1]))
-

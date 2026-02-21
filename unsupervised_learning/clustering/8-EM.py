@@ -21,7 +21,7 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         m: numpy.ndarray of shape (k, d) with centroid means per cluster
         S: numpy.ndarray of shape (k, d, d) with covariance matrices
         g: numpy.ndarray of shape (k, n) with posterior probabilities
-        l: log likelihood of the model
+        log_l: log likelihood of the model
         or None, None, None, None, None on failure
     """
     if not isinstance(X, np.ndarray) or X.ndim != 2:
@@ -36,21 +36,24 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
         return None, None, None, None, None
 
     pi, m, S = initialize(X, k)
-    l_prev = 0
+    log_l_prev = 0
 
     for i in range(iterations):
-        g, l = expectation(X, pi, m, S)
+        g, log_l = expectation(X, pi, m, S)
         if verbose and i % 10 == 0:
             print("Log Likelihood after {} iterations: {}".format(
-                i, round(l, 5)))
-        if i > 0 and abs(l - l_prev) <= tol:
-            break
-        l_prev = l
+                i, round(log_l, 5)))
+        if i > 0 and abs(log_l - log_l_prev) <= tol:
+            if verbose and i % 10 != 0:
+                print("Log Likelihood after {} iterations: {}".format(
+                    i, round(log_l, 5)))
+            return pi, m, S, g, log_l
+        log_l_prev = log_l
         pi, m, S = maximization(X, g)
 
-    g, l = expectation(X, pi, m, S)
+    g, log_l = expectation(X, pi, m, S)
     if verbose:
         print("Log Likelihood after {} iterations: {}".format(
-            i + 1, round(l, 5)))
+            iterations, round(log_l, 5)))
 
-    return pi, m, S, g, l
+    return pi, m, S, g, log_l
