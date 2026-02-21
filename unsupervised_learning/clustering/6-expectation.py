@@ -42,4 +42,3 @@ def expectation(X, pi, m, S):
     l = np.sum(np.log(total))
 
     return g, l
-

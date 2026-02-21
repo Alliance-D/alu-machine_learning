@@ -31,4 +31,3 @@ def initialize(X, k):
     S = np.tile(np.eye(d), (k, 1, 1))
 
     return pi, m, S
-

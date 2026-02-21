@@ -44,4 +44,3 @@ def optimum_k(X, kmin=1, kmax=None, iterations=1000):
     d_vars = [base - v for v in variances]
 
     return results, d_vars
-

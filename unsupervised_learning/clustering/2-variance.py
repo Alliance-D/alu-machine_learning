@@ -20,4 +20,3 @@ def variance(X, C):
     dists = np.linalg.norm(X[:, np.newaxis] - C, axis=2)
     clss = np.argmin(dists, axis=1)
     return np.sum((X - C[clss]) ** 2)
-

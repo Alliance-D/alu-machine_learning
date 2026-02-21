@@ -37,4 +37,3 @@ def maximization(X, g):
         S[i] = (g[i] * diff.T) @ diff / nk[i]
 
     return pi, m, S
-

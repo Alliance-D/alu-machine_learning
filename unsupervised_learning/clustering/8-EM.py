@@ -54,4 +54,3 @@ def expectation_maximization(X, k, iterations=1000, tol=1e-5, verbose=False):
             i + 1, round(l, 5)))
 
     return pi, m, S, g, l
-

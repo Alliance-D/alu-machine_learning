@@ -16,4 +16,3 @@ def kmeans(X, k):
     """
     model = sklearn.cluster.KMeans(n_clusters=k).fit(X)
     return model.cluster_centers_, model.labels_
-

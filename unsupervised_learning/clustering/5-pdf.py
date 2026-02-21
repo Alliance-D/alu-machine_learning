@@ -32,4 +32,3 @@ def pdf(X, m, S):
     P = coeff * np.exp(exponent)
 
     return np.maximum(P, 1e-300)
-

@@ -24,4 +24,3 @@ def gmm(X, k):
     clss = model.predict(X)
     bic = model.bic(X)
     return pi, m, S, clss, bic
-
