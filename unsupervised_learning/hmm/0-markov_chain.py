@@ -4,7 +4,8 @@ import numpy as np
 
 
 def markov_chain(P, s, t=1):
-    """Determine the probability of a Markov chain being in a state after t iterations.
+    """Determine the probability of a Markov chain being in a state
+	after t iterations.
 
     Args:
         P: numpy.ndarray of shape (n, n), the transition matrix
